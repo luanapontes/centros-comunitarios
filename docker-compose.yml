@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:latest
+    container_name: centros-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  api:
+    build: .
+    container_name: centros-api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongo
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/centrosdb
+
+volumes:
+  mongo-data:
